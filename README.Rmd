@@ -1,0 +1,88 @@
+---
+title: "Conv lstm"
+author: "Lukio"
+date: "24 January 2019"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+library(reticulate)
+use_condaenv(condaenv="my_py3.5_environ",conda="C:/Users/jolweny/AppData/Local/rodeo/app-2.5.2/resources/conda/conda.exe")
+use_condaenv(condaenv="my_py3.5_environ",required=T)
+
+```
+##use_python("~/AppData/Local/rodeo/app-2.5.2/resources/conda/envs/my_py3.5_environ/python")
+##use_condaenv(condaenv="my_py3.5_environ",conda="~/AppData/Local/rodeo/app-2.5.2/resources/conda")
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+[//]: <> (How to add an image to the Rmardown)
+![an image caption Source: Ultimate Funny Dog Videos Compilation 2013.](Images/distr1.png)
+
+[//]: <> (Setting up Python kernel)
+
+
+[//]: <> (Adding Python Chunks)
+
+
+```{python}
+import pandas
+import numpy as np
+import matplotlib.pyplot as plt
+flights= pandas.read_csv("flights.csv")
+flights=flights[flights['DEST_STATE_NM']=="Illinois"]
+flights= flights[['OP_UNIQUE_CARRIER', 'DEP_DELAY', 'ARR_DELAY']]
+flights= flights.dropna()
+plt.plot(flights['OP_UNIQUE_CARRIER'],flights['ARR_DELAY'])
+print(flights.head())
+plt.show()
+```
+# you can use py$flights
+```{r,fig.width=7, fig.height=3}
+library(ggplot2)
+ggplot(py$flights,aes(OP_UNIQUE_CARRIER,ARR_DELAY))+ geom_point()+geom_jitter()
+```
+
+#Calling R from Python- access R object in python
+```{r}
+library(tidyverse)
+flights= read_csv("flights.csv") %>%
+ filter(DEST_STATE_NM=="Illinois")%>%
+ select(OP_UNIQUE_CARRIER,DEP_DELAY,ARR_DELAY)%>%
+ na.omit()
+```
+```{r}
+library(ggplot2)
+head(flights)
+ggplot(flights,aes(OP_UNIQUE_CARRIER,ARR_DELAY))+ geom_point()+geom_jitter()
+```
+
+```{python}
+print(r.flights.head())
+```
+```{r}
+data(cars)
+```
+```{r, fig.width = 2}
+# Small fig.width
+ggplot(cars, aes(speed, dist)) + geom_point()
+```
